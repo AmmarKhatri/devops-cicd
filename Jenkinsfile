@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using the Dockerfile in your repository
-                    dockerImage = docker.build dockerImageName
+                    dockerImage = docker.build(dockerImageName)
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     // Apply the Kubernetes deployment and service configurations
-                    kubernetesDeploy(configs: "k8s/todo-app-deployment.yml", "k8s/secrets.yaml")
+                    kubernetesDeploy(configs: "k8s/deployment.yml", "k8s/secrets.yml")
                 }
             }
         }
