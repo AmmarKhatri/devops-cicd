@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout Source') {
              steps {
                 // Checkout the source code from your Git repository
-                git branch: 'main', url: ' https://github.com/AmmarKhatri/devops-cicd.git'
+                git branch: 'main', url: 'https://github.com/AmmarKhatri/devops-cicd.git'
             }
         }
 
