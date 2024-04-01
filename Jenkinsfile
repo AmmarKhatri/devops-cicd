@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         dockerImageName = "lones58/todo-app"
+        kubeconfigCredentialId = "kubeconfig"
     }
 
     stages {
@@ -16,8 +17,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    // Build the Docker image using the Dockerfile in your repository
-                    dockerImage = docker.build(dockerImageName)
+                    dockerImage = docker.build dockerImageName
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
                 script {
-                    // Push the Docker image to Docker Hub
+                    //pushing to docker
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
                         dockerImage.push("latest")
                     }
@@ -36,11 +36,15 @@ pipeline {
             }
         }
 
-        stage('Deploying todoapp container to Minikube') {
+        stage('Deploying to Minikube') {
             steps {
                 script {
-                    // Apply the Kubernetes deployment and service configurations
-                    kubernetesDeploy(configs: "k8s/deployment.yml", "k8s/secrets.yml")
+                        //Applying kubeconfig
+                        withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
+                        // Apply yml files
+                        bat 'kubectl apply -f ./k8s/secrets.yml'
+                        bat 'kubectl apply -f ./k8s/deployment.yml'
+                    }
                 }
             }
         }
