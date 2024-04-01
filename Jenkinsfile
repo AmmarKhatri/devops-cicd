@@ -42,7 +42,7 @@ pipeline {
                         //Applying kubeconfig
                         withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
                         // Apply yml files
-                        bat 'kubectl apply -f ./k8s/secrets.yml'
+                        bat 'kubectl apply -f ./k8s/secret.yml'
                         bat 'kubectl apply -f ./k8s/deployment.yml'
                     }
                 }
